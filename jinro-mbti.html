@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>もしも貴方がRPGの世界で人狼をしていたら</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Serif+JP:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap');
+:root {
+  --bg:#1a1a2e; --bg2:#16213e; --surface:#0f3460; --surface2:#1a1a3e;
+  --gold:#ffd700; --gold2:#ffaa00; --text:#e8f4f8; --text-dim:#8899aa;
+  --green:#44ff88; --red:#ff4466; --blue:#44aaff; --purple:#aa66ff;
+  --dot:'DotGothic16',monospace; --serif:'Noto Serif JP',serif; --body:'Zen Kaku Gothic New',sans-serif;
+  --px:5px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:999;}
+.wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 16px 80px;}
+.screen{display:none;}.screen.active{display:block;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* pixel borders */
+.px-top{border-top:4px solid transparent;border-image:repeating-linear-gradient(90deg,#e94560 0,#e94560 4px,transparent 4px,transparent 8px) 1;}
+.px-bot{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 8px) 1;}
+.px-gold-top{border-top:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 4px,var(--gold2) 4px,var(--gold2) 8px) 1;}
+.px-gold-bot{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold2) 0,var(--gold2) 4px,var(--gold) 4px,var(--gold) 8px) 1;}
+.px-divider{height:8px;background:repeating-linear-gradient(90deg,#e94560 0,#e94560 8px,var(--gold) 8px,var(--gold) 16px,#4a9eff 16px,#4a9eff 24px,var(--gold) 24px,var(--gold) 32px);margin:20px 0;}
+
+/* HEADER */
+.site-header{padding:20px 0 0;margin-bottom:0;}
+.header-sprites{display:flex;justify-content:center;align-items:flex-end;gap:4px;padding:12px 8px;background:rgba(0,0,0,0.4);flex-wrap:wrap;}
+.header-sprites-border{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 4px,transparent 4px,transparent 8px) 1;margin-bottom:0;}
+.mini-spr{display:grid;grid-template-columns:repeat(8,3px);gap:0;cursor:default;transition:transform 0.15s;}
+.mini-spr:hover{transform:translateY(-3px);}
+.mp{width:3px;height:3px;}
+.title-block{text-align:center;padding:24px 16px 28px;background:rgba(0,0,0,0.2);}
+.title-eyebrow{font-family:var(--dot);font-size:11px;color:var(--green);letter-spacing:0.3em;margin-bottom:14px;animation:blink 2.5s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.title-main{font-family:var(--dot);font-size:clamp(15px,3.8vw,21px);line-height:1.9;color:var(--gold);text-shadow:3px 3px 0 rgba(0,0,0,0.6),0 0 24px rgba(255,215,0,0.25);margin-bottom:12px;letter-spacing:0.05em;}
+.title-sub{font-family:var(--dot);font-size:12px;color:var(--text-dim);letter-spacing:0.2em;}
+
+/* AXIS LEGEND */
+.axis-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;}
+.axis-item{background:var(--surface2);border:2px solid #2a2a5a;padding:12px 14px;}
+.axis-code{font-family:var(--dot);font-size:13px;margin-bottom:4px;}
+.axis-vs{font-family:var(--dot);font-size:10px;margin-bottom:5px;opacity:0.8;}
+.axis-desc{font-size:11px;color:var(--text-dim);line-height:1.6;}
+
+/* TYPE GRID */
+.type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:16px;}
+.type-chip{background:var(--surface2);border:2px solid;padding:8px 4px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.type-chip:hover{transform:translateY(-2px);filter:brightness(1.25);}
+.tc-code{font-family:var(--dot);font-size:10px;margin-bottom:3px;}
+.tc-job{font-size:10px;color:var(--text-dim);}
+
+/* NOTICE */
+.notice-box{background:rgba(0,0,0,0.35);border:2px solid #2a2a5a;padding:16px 18px;margin-bottom:16px;}
+.notice-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:10px;}
+.notice-list{list-style:none;}
+.notice-list li{font-size:12px;color:var(--text-dim);line-height:1.7;padding-left:14px;position:relative;}
+.notice-list li::before{content:'►';position:absolute;left:0;font-size:8px;top:5px;color:var(--gold);}
+.notice-list li strong{color:var(--text);}
+
+/* BUTTONS */
+.btn-start{display:block;width:100%;padding:16px;background:#e94560;border:none;color:#fff;font-family:var(--dot);font-size:15px;letter-spacing:0.12em;cursor:pointer;box-shadow:4px 4px 0 rgba(0,0,0,0.5);transition:all 0.1s;}
+.btn-start:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(0,0,0,0.5);}
+.btn-start:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,0.5);}
+.btn-list{display:block;width:100%;padding:13px;background:transparent;border:2px solid var(--text-dim);color:var(--text-dim);font-family:var(--dot);font-size:13px;letter-spacing:0.1em;cursor:pointer;margin-top:8px;transition:all 0.15s;box-shadow:3px 3px 0 rgba(0,0,0,0.3);}
+.btn-list:hover{border-color:var(--gold);color:var(--gold);box-shadow:4px 4px 0 rgba(0,0,0,0.4);}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:20px;padding-top:20px;}
+.progress-info{display:flex;justify-content:space-between;font-family:var(--dot);font-size:12px;color:var(--text-dim);margin-bottom:6px;}
+.progress-track{height:10px;background:var(--surface2);border:2px solid #2a2a5a;overflow:hidden;}
+.progress-fill{height:100%;background:repeating-linear-gradient(90deg,var(--green) 0,var(--green) 8px,#22cc66 8px,#22cc66 16px);transition:width 0.4s ease;}
+
+/* QUESTION */
+.q-card{background:var(--surface2);border:2px solid #2a4a7a;padding:24px 20px;margin-bottom:16px;position:relative;}
+.q-num{font-family:var(--dot);font-size:11px;color:var(--green);margin-bottom:12px;letter-spacing:0.2em;}
+.q-text{font-size:clamp(13px,3.2vw,16px);line-height:1.9;font-weight:700;margin-bottom:22px;letter-spacing:0.02em;}
+.scale-wrap{display:flex;flex-direction:column;gap:6px;}
+.scale-btn{width:100%;padding:12px 14px;background:rgba(0,0,0,0.3);border:2px solid #2a2a5a;color:var(--text-dim);font-family:var(--body);font-size:13px;cursor:pointer;transition:all 0.12s;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:2px 2px 0 rgba(0,0,0,0.3);}
+.scale-btn:hover{background:rgba(255,215,0,0.07);border-color:var(--gold);color:var(--text);transform:translateX(4px);}
+.scale-btn:active{transform:translateX(1px);}
+.s-icon{font-family:var(--dot);font-size:13px;width:22px;text-align:center;flex-shrink:0;}
+
+/* RESULT */
+.result-header{text-align:center;padding:28px 16px 24px;background:var(--surface2);border:2px solid var(--gold);margin-bottom:14px;position:relative;}
+.dot-art-wrap{display:flex;justify-content:center;margin-bottom:16px;}
+.dot-art{display:grid;grid-template-columns:repeat(16,var(--px));gap:0;filter:drop-shadow(0 0 10px rgba(255,215,0,0.35));}
+.dp{width:var(--px);height:var(--px);}
+.result-eyebrow{font-family:var(--dot);font-size:11px;color:var(--green);letter-spacing:0.3em;margin-bottom:10px;}
+.result-code{font-family:var(--dot);font-size:clamp(20px,5.5vw,32px);color:var(--gold);letter-spacing:0.25em;margin-bottom:4px;text-shadow:3px 3px 0 rgba(0,0,0,0.5);}
+.result-job{font-family:var(--dot);font-size:clamp(24px,6.5vw,40px);letter-spacing:0.1em;line-height:1.1;margin-bottom:10px;text-shadow:3px 3px 0 rgba(0,0,0,0.5);}
+.result-tagline{font-size:13px;color:var(--text-dim);line-height:1.7;}
+
+/* axis bars */
+.axis-bars-card{background:var(--surface2);border:2px solid #2a4a7a;padding:20px;margin-bottom:10px;}
+.bars-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:16px;letter-spacing:0.15em;}
+.axis-bar-row{margin-bottom:14px;}
+.axis-bar-row:last-child{margin-bottom:0;}
+.axis-bar-labels{display:flex;justify-content:space-between;font-family:var(--dot);font-size:11px;margin-bottom:5px;}
+.axis-bar-track{height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;}
+.axis-bar-fill{height:100%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);position:absolute;left:0;top:0;}
+.axis-bar-mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.15);}
+
+/* result cards */
+.r-card{background:var(--surface2);border:2px solid #2a4a7a;padding:18px;margin-bottom:10px;}
+.r-card-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:12px;letter-spacing:0.15em;}
+.r-list{list-style:none;}
+.r-list li{font-size:13px;line-height:1.8;padding:6px 0 6px 16px;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;color:var(--text-dim);}
+.r-list li::before{content:'▶';position:absolute;left:0;font-size:8px;top:10px;opacity:0.5;}
+.r-list li:last-child{border-bottom:none;}
+.r-play-text{font-size:13px;line-height:1.85;color:var(--text-dim);}
+.compat-wrap{display:flex;gap:6px;flex-wrap:wrap;}
+.compat-chip{padding:5px 10px;border:2px solid;font-family:var(--dot);font-size:11px;letter-spacing:0.05em;}
+.compat-chip.first{border-color:var(--gold);color:var(--gold);}
+.compat-chip:not(.first){border-color:#2a2a5a;color:var(--text-dim);}
+
+/* LIST PAGE */
+.list-page-title{font-family:var(--dot);font-size:clamp(14px,3.5vw,18px);color:var(--gold);text-align:center;padding:28px 0 16px;letter-spacing:0.1em;}
+.list-grid{display:flex;flex-direction:column;gap:10px;}
+.list-card{background:var(--surface2);border:2px solid #2a4a7a;padding:18px;display:flex;gap:16px;align-items:flex-start;cursor:pointer;transition:all 0.15s;}
+.list-card:hover{border-color:var(--gold);transform:translateX(3px);}
+.list-spr{flex-shrink:0;}
+.list-spr .dot-art{--px:3px;}
+.list-info{flex:1;}
+.list-code{font-family:var(--dot);font-size:11px;color:var(--text-dim);margin-bottom:3px;letter-spacing:0.15em;}
+.list-job{font-family:var(--dot);font-size:16px;margin-bottom:6px;}
+.list-tagline{font-size:12px;color:var(--text-dim);line-height:1.6;}
+.list-axes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.list-ax{font-family:var(--dot);font-size:10px;padding:2px 6px;border:1px solid;opacity:0.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- TOP -->
+<div class="screen active" id="sc-top">
+  <div class="site-header">
+    <div class="header-sprites header-sprites-border px-top" id="header-sprites"></div>
+    <div class="title-block px-bot">
+      <div class="title-eyebrow">▶ NEW GAME START ◀</div>
+      <h1 class="title-main">もしも貴方が<br>RPGの世界で<br>人狼をしていたら</h1>
+      <p class="title-sub">— 16 TYPE DIAGNOSIS —</p>
+    </div>
+  </div>
+  <div class="px-divider"></div>
+  <div class="axis-legend">
+    <div class="axis-item px-top">
+      <div class="axis-code" style="color:#e07040">A / P 軸</div>
+      <div class="axis-vs" style="color:#e07040">能動 ↔ 受動</div>
+      <div class="axis-desc">流れを生み出す姿勢か<br>流れに乗る姿勢か</div>
+    </div>
+    <div class="axis-item px-top">
+      <div class="axis-code" style="color:#4aaa6a">S / O 軸</div>
+      <div class="axis-vs" style="color:#4aaa6a">主観 ↔ 客観</div>
+      <div class="axis-desc">自分の意見を優先するか<br>見られ方を意識するか</div>
+    </div>
+    <div class="axis-item px-top">
+      <div class="axis-code" style="color:#4a9fb8">I / L 軸</div>
+      <div class="axis-vs" style="color:#4a9fb8">直感 ↔ 論理</div>
+      <div class="axis-desc">感覚的に判断するか<br>理屈的に判断するか</div>
+    </div>
+    <div class="axis-item px-top">
+      <div class="axis-code" style="color:#9b6dd6">R / I 軸</div>
+      <div class="axis-vs" style="color:#9b6dd6">現実 ↔ 理想</div>
+      <div class="axis-desc">状況の中でできることをするか<br>最適解を求めるか</div>
+    </div>
+  </div>
+  <div class="type-grid" id="type-grid-top"></div>
+  <div class="notice-box px-top px-bot">
+    <div class="notice-title">！ はじめにお読みください</div>
+    <ul class="notice-list">
+      <li>この診断は<strong>プレイ傾向を知るための遊び</strong>であり、正確な性格診断ではありません</li>
+      <li>どのタイプに優劣はありません。強いプレイヤーはどのタイプにも存在します</li>
+      <li>回答する時期や状況によって結果が変わることがあります</li>
+      <li>診断結果を他者への決めつけや批判に使用しないでください</li>
+      <li>ニュートラルな状態で、直感的に答えてください</li>
+    </ul>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">▶ 診断スタート</button>
+  <button class="btn-list" onclick="showScreen('sc-list')">▶ 全職業一覧を見る</button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="sc-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="q-counter">Q01 / 52</span>
+      <span id="q-pct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="q-card px-top px-bot">
+    <div class="q-num" id="q-num">Q01</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="scale-wrap" id="scale-wrap"></div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="sc-result">
+  <div class="result-header px-gold-top px-gold-bot">
+    <div class="result-eyebrow">▶ YOUR TYPE IS ◀</div>
+    <div class="dot-art-wrap"><div class="dot-art" id="dot-art"></div></div>
+    <div class="result-code" id="res-code"></div>
+    <div class="result-job" id="res-job"></div>
+    <div class="result-tagline" id="res-tagline"></div>
+  </div>
+  <div class="axis-bars-card px-top" id="axis-bars">
+    <div class="bars-title">▶ AXIS SCORE</div>
+  </div>
+  <div class="r-card px-top">
+    <div class="r-card-title">▶ 長所</div>
+    <ul class="r-list" id="res-str"></ul>
+  </div>
+  <div class="r-card px-top">
+    <div class="r-card-title">▶ 短所</div>
+    <ul class="r-list" id="res-weak"></ul>
+  </div>
+  <div class="r-card px-top">
+    <div class="r-card-title">▶ 得意な立ち回り</div>
+    <div class="r-play-text" id="res-play"></div>
+  </div>
+  <div class="r-card px-top">
+    <div class="r-card-title">▶ 相性のいいタイプ</div>
+    <div class="compat-wrap" id="res-compat"></div>
+  </div>
+  <button class="btn-start" style="margin-top:18px;" onclick="retry()">▶ もう一度プレイ</button>
+  <button class="btn-list" onclick="showScreen('sc-list')">▶ 全職業一覧を見る</button>
+</div>
+
+<!-- LIST -->
+<div class="screen" id="sc-list">
+  <div class="list-page-title px-top">▶ 全職業一覧 ◀</div>
+  <div class="px-divider"></div>
+  <div class="list-grid" id="list-grid"></div>
+  <button class="btn-list" style="margin-top:20px;" onclick="showScreen('sc-top')">◀ トップに戻る</button>
+</div>
+
+</div>
+<script>
+const Qs=[
+  {t:"気になったことは、まず発言をしてから考えが整理されていく感覚がある",ax:"a",dir:1},
+  {t:"市民のとき、誰もまだ触れていない話題を自分から出すことが多い",ax:"a",dir:1},
+  {t:"市民のとき、議論の口火を切ってくれる人がいた方が動きやすい",ax:"a",dir:-1},
+  {t:"もし人狼だったとしたら、自分から話題や視点を出して流れを作りにいく方だ",ax:"a",dir:1},
+  {t:"もし人狼だったとしたら、場の空気をひと通り見てから動き始める方が自分らしい",ax:"a",dir:-1},
+  {t:"市民のとき、序盤から全力投球で試合に臨む方だ",ax:"a",dir:1},
+  {t:"本日の処刑が決まっている場合でも議論をしたい",ax:"a",dir:1},
+  {t:"市民のとき、「今日の議論をこう進めよう」という提案を自分から出すことがある",ax:"a",dir:1},
+  {t:"もし人狼だったとしたら、議論を引っ張る側に回ることで市民らしく見せようとする方だ",ax:"a",dir:1},
+  {t:"市民のとき、提案を自分から出すより誰かの提案に乗る方が自分には合っている",ax:"a",dir:-1},
+  {t:"もし人狼だったとしたら、目立った行動より場の流れに自然に乗る方が自分らしい",ax:"a",dir:-1},
+  {t:"市民のとき、考えが固まってから発言するより、まず出してみる方が自分には合っている",ax:"a",dir:1},
+  {t:"もし人狼だったとしたら、安全を確認してから動くより、まず動いて状況を見る方が自分らしい",ax:"a",dir:1},
+  {t:"自分の読みに自信があるとき、周囲の意見と違っても押し通せる方だ",ax:"s",dir:1},
+  {t:"発言するとき、周りからどう見られるかより自分が正しいと思うことを優先する",ax:"s",dir:1},
+  {t:"他の参加者に自分の考えを「どう受け取られるか」を意識しながら発言する",ax:"s",dir:-1},
+  {t:"自分の感触で「この人が黒」と思ったら、周囲の評価と違ってもその読みを大事にする",ax:"s",dir:1},
+  {t:"村全体の空気や流れを壊さないように、発言のタイミングや言い方を調整することがある",ax:"s",dir:-1},
+  {t:"もし人狼だったとしたら、他者にどう見られているかより自分の判断で動く方だ",ax:"s",dir:1},
+  {t:"もし人狼だったとしたら、市民として「信頼される見せ方」を意識しながら立ち回る方だ",ax:"s",dir:-1},
+  {t:"議論の中で少数派になっても、自分の読みを曲げず発言し続けられる",ax:"s",dir:1},
+  {t:"自分の発言が村の雰囲気に合っているかどうかが気になる方だ",ax:"s",dir:-1},
+  {t:"市民のとき、占い希望を出すなど村全体への働きかけを意識することが多い",ax:"s",dir:-1},
+  {t:"自分の直感や読みは、他者の意見より信頼できると感じることが多い",ax:"s",dir:1},
+  {t:"発言の内容より、発言のタイミングや見せ方の方が結果に影響すると思う",ax:"s",dir:-1},
+  {t:"市民のとき、自分の立ち位置が村の中でどう映っているかを気にする方だ",ax:"s",dir:-1},
+  {t:"AさんとBさんのやり取りを見て、どちらかへの印象が変わることがある",ax:"i",dir:1},
+  {t:"黒を疑う根拠として、発言の整合性やログ全体のズレを重視することが多い",ax:"i",dir:-1},
+  {t:"「なんとなく黒い気がする」という感触を大事にする方だ",ax:"i",dir:1},
+  {t:"吊り先を決めるとき、感触より論理的な根拠を優先する方だ",ax:"i",dir:-1},
+  {t:"自分が直接やり取りした相手の方が、ログだけで見た相手より黒白の感触を掴みやすい",ax:"i",dir:1},
+  {t:"市民のとき、自分が絡んでいないログからも判断材料を見つけることがある",ax:"i",dir:-1},
+  {t:"「この発言の流れはおかしい」という構造的なズレを根拠に黒を疑うことが多い",ax:"i",dir:-1},
+  {t:"浅い考察や根拠の薄い発言に対して、深掘りや問い返しをしたくなる方だ",ax:"i",dir:-1},
+  {t:"市民のとき、ゲームが進むほど村全体の構図が整理されてきて、やりやすくなる感覚がある",ax:"i",dir:-1},
+  {t:"もし人狼だったとしたら、村の中で生まれている対立や疑いの構造を利用して立ち回る方が自分らしい",ax:"i",dir:-1},
+  {t:"「この人、なんか違う」という感覚は意外と当たることが多い",ax:"i",dir:1},
+  {t:"役職や状況の整合性を丁寧に確認してから発言する方だ",ax:"i",dir:-1},
+  {t:"初日の段階でも、感触だけで怪しい人の目星をつけることがある",ax:"i",dir:1},
+  {t:"状況が理想的でなくても、その中でできる最善を選んで動ける方だ",ax:"r",dir:1},
+  {t:"今の村の状況より、「こうあるべき」という理想の展開を目指して動くことが多い",ax:"r",dir:-1},
+  {t:"市民のとき、占い結果など何らかの材料が出てから本格的に動き始めることが多い",ax:"r",dir:1},
+  {t:"「理想の議論の進め方」があって、それに村を持っていこうとすることがある",ax:"r",dir:-1},
+  {t:"不確かな情報でも、今使える情報を最大限活かして判断する方だ",ax:"r",dir:1},
+  {t:"市民のとき、進行論の提案など議論の枠組みを作ることに関心がある",ax:"r",dir:-1},
+  {t:"もし人狼だったとしたら、特定の一人との関係性を作ることで自分の立場を守ろうとする方だ",ax:"r",dir:1},
+  {t:"もし人狼だったとしたら、噛み先や仲間の守り方は村全体の流れや構造を見て判断することが多い",ax:"r",dir:-1},
+  {t:"村の状況がどうであれ、勝ちに行ける手段を柔軟に選べる方だ",ax:"r",dir:1},
+  {t:"「こういう村にしたい」という明確なイメージを持ってゲームに臨むことがある",ax:"r",dir:-1},
+  {t:"もし人狼だったとしたら、生存者の構図が整理されてきた終盤に勝負の動きをかけることが多い",ax:"r",dir:-1},
+  {t:"市民のとき、黒と感じたらその人への精査を優先する方が自分には合っている",ax:"r",dir:1},
+  {t:"ゲームの展開がどう転んでも、そのつど対応策を考えて動ける方だ",ax:"r",dir:1},
+];
+
+const JOBS={
+  ASIR:{name:"勇者",color:"#e0a030",tagline:"直感と信念で場を切り開く先駆者",
+    str:["正しいと思ったら迷わず動き出せる瞬発力がある","序盤から存在感を出して議論を牽引できる","感触と状況判断を組み合わせた柔軟な攻め方ができる"],
+    weak:["自信が強すぎてミスリードを引き起こすことがある","周囲の意見を軽視して孤立するケースがある","空回りしたときの修正に時間がかかる"],
+    play:"市民時は序盤から感触ベースで精査を進め議論を牽引する。人狼時は積極的な発言で市民らしさをアピールし信頼を作る。",
+    compat:["ASLR","PSIR","AOIR"]},
+  ASII:{name:"魔法戦士",color:"#d060c0",tagline:"理想を描きながら直感で突き進む二刀流",
+    str:["感触と理想のビジョンを組み合わせた独自の動きができる","序盤から積極的に場を作りにいける","長期的な視点で村を誘導できる"],
+    weak:["理想と現実のギャップで空回りすることがある","自分のビジョンを押し付けすぎることがある","切り替えに時間がかかることがある"],
+    play:"市民時は「こうあるべき議論」をイメージしながら感触で黒を特定していく。人狼時はビジョンを持って場を誘導する。",
+    compat:["ASIR","ASLR","PSII"]},
+  AOIR:{name:"盗賊",color:"#50c080",tagline:"空気を読みながら自分の利を取る身軽な動き手",
+    str:["周囲の反応を素早く読みながら感触で動ける","市民としての見せ方が上手く立ち位置を取りやすい","状況に応じて柔軟に動き方を変えられる"],
+    weak:["本音が見えにくく信頼を得るのに時間がかかることがある","方針がブレやすいと思われることがある","軽さが裏目に出ることがある"],
+    play:"市民時は場の空気を掴みながら感触で精査する。人狼時は見られ方を計算しながら現実的な利を取る動きをとる。",
+    compat:["POIR","AOIR","AOLR"]},
+  AOII:{name:"吟遊詩人",color:"#e080a0",tagline:"場の雰囲気を作りながら理想を追う演出家",
+    str:["村の雰囲気を上手くコントロールできる","感触と理想のバランスで独自の議論ができる","場の空気を変えるインパクトある発言ができる"],
+    weak:["実利より雰囲気を重視しすぎることがある","理想の展開にこだわりすぎて柔軟性を欠くことがある","空気作りが空回りすると伝わりにくい"],
+    play:"市民時は村の空気を整えながら理想の議論へ誘導する。人狼時は見せ方と理想の立ち回りを組み合わせて動く。",
+    compat:["POII","AOII","AOLI"]},
+  ASLR:{name:"戦士",color:"#e05030",tagline:"論理で武装して議論を力強く牽引するタイプ",
+    str:["根拠を持って序盤から議論を引っ張れる","強い発言で場の空気を作り流れを変えられる","ブレが少なくハマると止まらない安定した強さがある"],
+    weak:["思考ロックになると復帰に時間がかかる","終盤にスタミナ切れを起こしやすい","押しが強すぎて軋轢を生むことがある"],
+    play:"市民時は序盤から論理的な根拠で精査を進め議論を牽引する。人狼時は堂々とした発言で市民らしさを演出する。",
+    compat:["ASIR","PSLR","ASLR"]},
+  ASLI:{name:"賢者",color:"#a060e0",tagline:"論理と理想で最適解を自ら作り出す知略家",
+    str:["深い分析で理想の議論展開を設計できる","長期的な視点での精査が得意で終盤に輝く","複雑な状況でも理論的に整理して見せられる"],
+    weak:["分析が深すぎて伝わりにくくなることがある","理想の展開にこだわりすぎることがある","初動が遅く見られることがある"],
+    play:"市民時は「あるべき議論」を論理で構築し進行を主導する。人狼時は緻密な計画で理想の立ち回りを目指す。",
+    compat:["AOLI","PSLI","ASIR"]},
+  AOLR:{name:"パラディン",color:"#60a0e0",tagline:"場を見ながら論理で村を守る守護者",
+    str:["周囲を見ながら論理的に安全な動きができる","バランスの取れた発言で信頼を積み上げられる","村の信頼を維持しながら精査を進められる"],
+    weak:["積極性に欠けると思われることがある","保守的な動きが多く攻め手に乏しいことがある","存在感を出すのに時間がかかる"],
+    play:"市民時は全体を見ながら論理で精査する。人狼時は信頼される立ち位置を論理的に構築して守る動きをとる。",
+    compat:["POLR","PSLR","AOLR"]},
+  AOLI:{name:"魔法使い",color:"#9b6dd6",tagline:"盤面を理想の型に嵌めていく戦略家",
+    str:["理想的な形に盤面を持っていくのが得意","初動から進行論の提案で優位なポジションを取れる","他タイプより言動が目立ちやすく初日に吊られにくい"],
+    weak:["相手に求める理解力が高すぎることがある","誤解されやすく解消に時間がかかる","一人で走りすぎて置いてかれることがある"],
+    play:"市民時は初動から進行を主導し盤面を理想の形へ持っていく。人狼時は客観的な立ち回りで市民として溶け込む。",
+    compat:["POLR","ASLI","AOLI"]},
+  PSIR:{name:"武闘家",color:"#e08030",tagline:"対話の中で直接ぶつかって真価を発揮するタイプ",
+    str:["直接やり取りした相手への精査が鋭い","受け身の中でも感触で素早く判断できる","終盤にかけて説得力と存在感が増す"],
+    weak:["序盤の起点がないと動きにくい","自分の感触を周囲に伝えるのが難しいことがある","単独行動が目立ちすぎることがある"],
+    play:"市民時は相手との対話から感触を掴んで精査を進める。人狼時は流れに乗りながら感触で動くタイミングを計る。",
+    compat:["ASIR","PSIR","PSLR"]},
+  PSII:{name:"踊り子",color:"#e060b0",tagline:"独自の感性と理想で予想外の動きをする自由人",
+    str:["独自の感性で予想外の動きができる","型にはまらない立ち回りで読まれにくい","理想のビジョンを持ちながら柔軟に対応できる"],
+    weak:["独自性が強すぎて周囲に伝わりにくいことがある","理想と感触が噛み合わないと空回りすることがある","安定感に欠けることがある"],
+    play:"市民時は感触と理想を組み合わせた独自の精査スタイルで動く。人狼時は予想外の動きで場を掻き回す。",
+    compat:["AOII","PSII","POII"]},
+  POIR:{name:"商人",color:"#60c060",tagline:"状況を見極めて実利を取る合理主義者",
+    str:["場の空気を読んだ上で現実的な判断ができる","損得を計算した無駄のない立ち回りができる","感触と現実を組み合わせてリスクを避けられる"],
+    weak:["計算高く見られて信頼されにくいことがある","信念に欠けると思われることがある","動きが読まれると一気に弱くなる"],
+    play:"市民時は場を観察しながら現実的な精査を行う。人狼時は状況ごとに最も安全な立ち位置を選んで動く。",
+    compat:["POLR","POIR","AOIR"]},
+  POII:{name:"旅芸人",color:"#e0a060",tagline:"空気を読みながら理想の舞台を作るエンターテイナー",
+    str:["場の雰囲気を掴んで理想の展開に誘導できる","エンタメ性のある立ち回りで場を盛り上げられる","観察力と理想のバランスで独自の動きができる"],
+    weak:["理想の展開にこだわりすぎて現実対応が遅れることがある","方向性がブレると迷走することがある","軽く見られることがある"],
+    play:"市民時は場の空気を読みながら理想の議論へ誘導する。人狼時は雰囲気を活かして自然に溶け込む動きをとる。",
+    compat:["AOII","PSII","POII"]},
+  PSLR:{name:"僧侶",color:"#4aaa6a",tagline:"議論を俯瞰し客観的な視点で語るバランサー",
+    str:["自分が入っていない対話への精査が得意","ゲーム終盤になるほど白く観られやすい","全体のバランスを考えて発言を調整できる"],
+    weak:["議論が動きだすまでの初動が苦手","初日の序盤中盤で共感性が得られないと吊られることがある","地味に見られやすく埋没することがある"],
+    play:"市民時は全体を見て論理的に精査し終盤に力を発揮する。人狼時は流れに乗りながら論理的な立ち回りで信頼を得る。",
+    compat:["ASLR","POLR","PSLR"]},
+  PSLI:{name:"錬金術師",color:"#80a0e0",tagline:"論理と理想で独自の解を生み出す探求者",
+    str:["深い分析で独自の解釈と結論を出せる","複雑な状況を整理して理想の答えを導ける","終盤にかけての分析精度が高く信頼を積める"],
+    weak:["独自の理論が伝わりにくいことがある","分析に時間がかかり初動が遅れることがある","深すぎる考察が浮いて見えることがある"],
+    play:"市民時はゆっくり情報を集めながら論理と理想で最適解を探る。人狼時は深く計算した立ち回りで長期戦に持ち込む。",
+    compat:["ASLI","AOLI","PSLI"]},
+  POLR:{name:"海賊",color:"#4a9fb8",tagline:"場を観察しながら論理で動く自由な実利主義者",
+    str:["周囲を見ながら論理的に現実的な動きができる","状況に応じて柔軟に戦術を変えられる","観察力と論理で着実に精査を積み重ねられる"],
+    weak:["方針が読まれにくく連携が難しいことがある","自由すぎて村全体の方向性と合わないことがある","信頼を築くまでに時間がかかる"],
+    play:"市民時は全体を観察しながら論理で精査を積み重ねる。人狼時は村の構造を読んで最適なタイミングで動く。",
+    compat:["PSLR","AOLR","POLR"]},
+  POLI:{name:"スーパースター",color:"#d0a000",tagline:"全てが揃った終盤に真の輝きを放つ大器",
+    str:["観察・論理・理想のバランスが高水準で安定している","終盤に構図が整ってから最高のパフォーマンスを発揮できる","村の流れを読んで理想の形へ誘導する力がある"],
+    weak:["序盤は目立たず存在感が薄く見られることがある","理想に固執しすぎると変化への対応が遅れることがある","終盤まで生き残れないと真価を発揮できない"],
+    play:"市民時は全体を観察し論理と理想で最適解を提示する。人狼時は村の構造と理想の立ち回りを組み合わせて終盤に輝く。",
+    compat:["AOLI","POLR","PSLI"]},
+};
+
+const TYPES=['ASIR','ASII','AOIR','AOII','ASLR','ASLI','AOLR','AOLI','PSIR','PSII','POIR','POII','PSLR','PSLI','POLR','POLI'];
+
+// ===== SPRITE SYSTEM =====
+const PAL={
+  ASIR:{H:'#f0c840',B:'#e06020',D:'#802000',A:'#60a0ff',C:'#2060c0',S:'#f8f8f8'},
+  ASII:{H:'#d060c0',B:'#a030a0',D:'#f0a0e0',A:'#60c0ff',C:'#2080d0',S:'#f8f8f8'},
+  AOIR:{H:'#50c080',B:'#208050',D:'#80e0b0',A:'#c0a030',C:'#806000',S:'#f8f8f8'},
+  AOII:{H:'#e080a0',B:'#c04060',D:'#f0b0c0',A:'#ffd080',C:'#c08000',S:'#f8f8f8'},
+  ASLR:{H:'#e05030',B:'#a02010',D:'#f08060',A:'#c0c0c0',C:'#606060',S:'#f8f8f8'},
+  ASLI:{H:'#a060e0',B:'#6020b0',D:'#d0a0ff',A:'#ffd080',C:'#c09000',S:'#f8f8f8'},
+  AOLR:{H:'#60a0e0',B:'#2060b0',D:'#a0d0ff',A:'#f0d060',C:'#c0a000',S:'#f8f8f8'},
+  AOLI:{H:'#9b6dd6',B:'#5030a0',D:'#d0b0ff',A:'#ffd080',C:'#c09000',S:'#f8f8f8'},
+  PSIR:{H:'#e08030',B:'#a04010',D:'#f0b060',A:'#e0e0e0',C:'#808080',S:'#f8f8f8'},
+  PSII:{H:'#e060b0',B:'#a02080',D:'#f0a0d0',A:'#ffe080',C:'#d0a000',S:'#f8f8f8'},
+  POIR:{H:'#60c060',B:'#208040',D:'#a0e0a0',A:'#e0c060',C:'#a08000',S:'#f8f8f8'},
+  POII:{H:'#e0a060',B:'#b06020',D:'#f0c090',A:'#ff80a0',C:'#c02060',S:'#f8f8f8'},
+  PSLR:{H:'#4aaa6a',B:'#206040',D:'#80d0a0',A:'#ffffff',C:'#c0c0c0',S:'#f8f8f8'},
+  PSLI:{H:'#80a0e0',B:'#3050b0',D:'#b0c8ff',A:'#ffa000',C:'#c06000',S:'#f8f8f8'},
+  POLR:{H:'#4a9fb8',B:'#205878',D:'#80c8d8',A:'#f0c040',C:'#b08000',S:'#f8f8f8'},
+  POLI:{H:'#d0a000',B:'#806000',D:'#f8d840',A:'#ff6060',C:'#c02020',S:'#f8f8f8'},
+};
+
+// 16x16 sprite template
+const SPR=[
+  '________________',
+  '____HHHHHH______',
+  '___HSSSSSSSH____',
+  '___SBBSBBS______',
+  '___SSSSSSSSH____',
+  '___HSSHSSH______',
+  '____SSSSSSS_____',
+  '__DDDSSSSSDDD___',
+  '_DDDDSSSSSDDDD__',
+  'DDDDDDSSSSDDDDD_',
+  '_DDDDDAAAADDDDD_',
+  '__DDD_AAAA_DDD__',
+  '___DD_CCCC_DD___',
+  '___DD______DD___',
+  '___DDDD_DDDD____',
+  '________________',
+];
+
+// 8x8 mini sprite template
+const MINI=[
+  '________',
+  '__HHHH__',
+  '_HSSSH__',
+  '_SBBS___',
+  '_SSSSH__',
+  '__DDDD__',
+  '__DAAD__',
+  '__D__D__',
+];
+
+function buildSprite(code, container, size) {
+  const pal = PAL[code]||PAL.ASIR;
+  const tmpl = size==='mini' ? MINI : SPR;
+  const cols = size==='mini' ? 8 : 16;
+  const px = size==='mini' ? '3px' : 'var(--px)';
+  container.style.display='grid';
+  container.style.gridTemplateColumns=`repeat(${cols},${px})`;
+  container.innerHTML='';
+  tmpl.forEach(row=>{
+    [...row].forEach(ch=>{
+      const d=document.createElement('div');
+      d.style.width=px; d.style.height=px;
+      const map={H:pal.H,B:pal.B,D:pal.D,A:pal.A,C:pal.C,S:pal.S,'_':'transparent'};
+      d.style.background=map[ch]||'transparent';
+      container.appendChild(d);
+    });
+  });
+}
+
+// ===== INIT GRIDS =====
+(function(){
+  // header sprites
+  const hs=document.getElementById('header-sprites');
+  TYPES.forEach(t=>{
+    const wrap=document.createElement('div');
+    wrap.className='mini-spr';
+    wrap.title=JOBS[t].name;
+    buildSprite(t,wrap,'mini');
+    hs.appendChild(wrap);
+  });
+
+  // top type grid
+  const tg=document.getElementById('type-grid-top');
+  TYPES.forEach(t=>{
+    const j=JOBS[t];
+    const d=document.createElement('div');
+    d.className='type-chip';
+    d.style.borderColor=j.color;
+    d.innerHTML=`<div class="tc-code" style="color:${j.color}">${t}</div><div class="tc-job">${j.name}</div>`;
+    tg.appendChild(d);
+  });
+
+  // list page
+  const lg=document.getElementById('list-grid');
+  TYPES.forEach(t=>{
+    const j=JOBS[t];
+    const card=document.createElement('div');
+    card.className='list-card px-top';
+    card.style.borderColor=j.color+'66';
+
+    const sprWrap=document.createElement('div');
+    sprWrap.className='list-spr';
+    const sprEl=document.createElement('div');
+    sprEl.style.display='grid';
+    buildSprite(t,sprEl,'mini');
+    sprWrap.appendChild(sprEl);
+
+    const axes=t.split('');
+    const axColors=['#e07040','#4aaa6a','#4a9fb8','#9b6dd6'];
+    const axLabels=[
+      axes[0]==='A'?'能動':'受動',
+      axes[1]==='S'?'主観':'客観',
+      axes[2]==='I'?'直感':'論理',
+      axes[3]==='R'?'現実':'理想',
+    ];
+
+    const info=document.createElement('div');
+    info.className='list-info';
+    info.innerHTML=`
+      <div class="list-code">${t}</div>
+      <div class="list-job" style="color:${j.color}">${j.name}</div>
+      <div class="list-tagline">${j.tagline}</div>
+      <div class="list-axes">
+        ${axLabels.map((l,i)=>`<span class="list-ax" style="color:${axColors[i]};border-color:${axColors[i]}">${l}</span>`).join('')}
+      </div>`;
+
+    card.appendChild(sprWrap);
+    card.appendChild(info);
+    lg.appendChild(card);
+  });
+})();
+
+// ===== QUIZ =====
+let cur=0;
+const scores={a:0,s:0,i:0,r:0};
+
+function startQuiz(){
+  cur=0; scores.a=0; scores.s=0; scores.i=0; scores.r=0;
+  showScreen('sc-quiz'); renderQ();
+}
+
+function renderQ(){
+  const q=Qs[cur],n=cur+1,total=Qs.length;
+  document.getElementById('q-counter').textContent=`Q${String(n).padStart(2,'0')} / ${total}`;
+  document.getElementById('q-pct').textContent=Math.round(cur/total*100)+'%';
+  document.getElementById('prog-fill').style.width=(cur/total*100)+'%';
+  document.getElementById('q-num').textContent='Q'+String(n).padStart(2,'0');
+  document.getElementById('q-text').textContent=q.t;
+  const wrap=document.getElementById('scale-wrap');
+  wrap.innerHTML='';
+  const opts=[
+    {val:2,icon:'◎',label:'そう思う'},
+    {val:1,icon:'○',label:'ややそう思う'},
+    {val:0,icon:'△',label:'どちらとも言えない'},
+    {val:-1,icon:'×',label:'あまりそう思わない'},
+    {val:-2,icon:'✕',label:'そう思わない'},
+  ];
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='scale-btn';
+    b.innerHTML=`<span class="s-icon">${o.icon}</span>${o.label}`;
+    b.onclick=()=>pick(o.val);
+    wrap.appendChild(b);
+  });
+}
+
+function pick(val){
+  const q=Qs[cur];
+  scores[q.ax]+=val*q.dir;
+  cur++;
+  if(cur>=Qs.length) showResult(); else renderQ();
+}
+
+function showResult(){
+  const A=scores.a>=0?'A':'P';
+  const S=scores.s>=0?'S':'O';
+  const I=scores.i>=0?'I':'L';
+  const R=scores.r>=0?'R':'I';
+  const code=A+S+I+R;
+  const j=JOBS[code]||JOBS['ASIR'];
+
+  document.getElementById('res-code').textContent=code;
+  document.getElementById('res-job').textContent=j.name;
+  document.getElementById('res-job').style.color=j.color;
+  document.getElementById('res-tagline').textContent=j.tagline;
+
+  const da=document.getElementById('dot-art');
+  buildSprite(code,da,'full');
+
+  // axis bars
+  const barsEl=document.getElementById('axis-bars');
+  barsEl.innerHTML='<div class="bars-title">▶ AXIS SCORE</div>';
+  const axes=[
+    {key:'a',left:'能動',right:'受動',color:'#e07040',max:26},
+    {key:'s',left:'主観',right:'客観',color:'#4aaa6a',max:26},
+    {key:'i',left:'直感',right:'論理',color:'#4a9fb8',max:26},
+    {key:'r',left:'現実',right:'理想',color:'#9b6dd6',max:26},
+  ];
+  axes.forEach(ax=>{
+    const sc=scores[ax.key];
+    const pct=((sc+ax.max)/(ax.max*2))*100;
+    const row=document.createElement('div');
+    row.className='axis-bar-row';
+    row.innerHTML=`
+      <div class="axis-bar-labels">
+        <span style="color:${ax.color}">${ax.left}</span>
+        <span style="color:var(--text-dim);font-family:var(--dot);font-size:10px;">${sc>0?'+':''}${sc}</span>
+        <span style="color:var(--text-dim)">${ax.right}</span>
+      </div>
+      <div class="axis-bar-track">
+        <div class="axis-bar-fill" style="width:${pct}%;background:${ax.color};"></div>
+        <div class="axis-bar-mid"></div>
+      </div>`;
+    barsEl.appendChild(row);
+  });
+
+  ['res-str','res-weak'].forEach((id,i)=>{
+    const el=document.getElementById(id); el.innerHTML='';
+    (i===0?j.str:j.weak).forEach(t=>{
+      const li=document.createElement('li'); li.textContent=t; el.appendChild(li);
+    });
+  });
+
+  document.getElementById('res-play').textContent=j.play;
+
+  const compat=document.getElementById('res-compat');
+  compat.innerHTML='';
+  j.compat.forEach((c,i)=>{
+    const sp=document.createElement('span');
+    sp.className='compat-chip'+(i===0?' first':'');
+    sp.textContent=(i+1)+'. '+c+' '+JOBS[c].name;
+    compat.appendChild(sp);
+  });
+
+  document.querySelectorAll('.r-card').forEach(el=>el.style.borderColor=j.color+'55');
+  showScreen('sc-result');
+}
+
+function retry(){ showScreen('sc-top'); }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
