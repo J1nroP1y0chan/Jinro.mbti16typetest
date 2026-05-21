@@ -7,11 +7,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Serif+JP:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap');
 :root {
-  --bg:#1a1a2e; --bg2:#16213e; --surface:#0f3460; --surface2:#1a1a3e;
-  --gold:#ffd700; --gold2:#ffaa00; --text:#e8f4f8; --text-dim:#8899aa;
-  --green:#44ff88; --red:#ff4466; --blue:#44aaff; --purple:#aa66ff;
-  --dot:'DotGothic16',monospace; --serif:'Noto Serif JP',serif; --body:'Zen Kaku Gothic New',sans-serif;
-  --px:5px;
+  --bg:#1a1a2e;--surface2:#1a1a3e;--gold:#ffd700;--gold2:#ffaa00;
+  --text:#e8f4f8;--text-dim:#8899aa;--green:#44ff88;
+  --dot:'DotGothic16',monospace;--body:'Zen Kaku Gothic New',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden;}
@@ -19,83 +17,61 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 16px 80px;}
 .screen{display:none;}.screen.active{display:block;animation:fadeIn 0.3s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* pixel borders */
 .px-top{border-top:4px solid transparent;border-image:repeating-linear-gradient(90deg,#e94560 0,#e94560 4px,transparent 4px,transparent 8px) 1;}
 .px-bot{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 8px) 1;}
 .px-gold-top{border-top:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 4px,var(--gold2) 4px,var(--gold2) 8px) 1;}
 .px-gold-bot{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold2) 0,var(--gold2) 4px,var(--gold) 4px,var(--gold) 8px) 1;}
 .px-divider{height:8px;background:repeating-linear-gradient(90deg,#e94560 0,#e94560 8px,var(--gold) 8px,var(--gold) 16px,#4a9eff 16px,#4a9eff 24px,var(--gold) 24px,var(--gold) 32px);margin:20px 0;}
-
-/* HEADER */
-.site-header{padding:20px 0 0;margin-bottom:0;}
-.header-sprites{display:flex;justify-content:center;align-items:flex-end;gap:4px;padding:12px 8px;background:rgba(0,0,0,0.4);flex-wrap:wrap;}
-.header-sprites-border{border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 4px,transparent 4px,transparent 8px) 1;margin-bottom:0;}
-.mini-spr{display:grid;grid-template-columns:repeat(8,3px);gap:0;cursor:default;transition:transform 0.15s;}
+.site-header{padding:20px 0 0;}
+.header-sprites{display:flex;justify-content:center;align-items:flex-end;gap:3px;padding:10px 6px;background:rgba(0,0,0,0.4);flex-wrap:wrap;border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 4px,transparent 4px,transparent 8px) 1;}
+.header-sprites-inner{display:flex;justify-content:center;align-items:flex-end;gap:3px;flex-wrap:wrap;}
+.mini-spr{cursor:default;transition:transform 0.15s;display:grid;}
 .mini-spr:hover{transform:translateY(-3px);}
-.mp{width:3px;height:3px;}
-.title-block{text-align:center;padding:24px 16px 28px;background:rgba(0,0,0,0.2);}
+.mp{display:block;}
+.title-block{text-align:center;padding:22px 16px 26px;background:rgba(0,0,0,0.2);border-bottom:4px solid transparent;border-image:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 8px) 1;}
 .title-eyebrow{font-family:var(--dot);font-size:11px;color:var(--green);letter-spacing:0.3em;margin-bottom:14px;animation:blink 2.5s step-end infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.title-main{font-family:var(--dot);font-size:clamp(15px,3.8vw,21px);line-height:1.9;color:var(--gold);text-shadow:3px 3px 0 rgba(0,0,0,0.6),0 0 24px rgba(255,215,0,0.25);margin-bottom:12px;letter-spacing:0.05em;}
+.title-main{font-family:var(--dot);font-size:clamp(15px,3.8vw,21px);line-height:1.9;color:var(--gold);text-shadow:3px 3px 0 rgba(0,0,0,0.6),0 0 24px rgba(255,215,0,0.25);margin-bottom:12px;}
 .title-sub{font-family:var(--dot);font-size:12px;color:var(--text-dim);letter-spacing:0.2em;}
-
-/* AXIS LEGEND */
 .axis-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;}
 .axis-item{background:var(--surface2);border:2px solid #2a2a5a;padding:12px 14px;}
 .axis-code{font-family:var(--dot);font-size:13px;margin-bottom:4px;}
 .axis-vs{font-family:var(--dot);font-size:10px;margin-bottom:5px;opacity:0.8;}
 .axis-desc{font-size:11px;color:var(--text-dim);line-height:1.6;}
-
-/* TYPE GRID */
 .type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:16px;}
 .type-chip{background:var(--surface2);border:2px solid;padding:8px 4px;text-align:center;cursor:pointer;transition:all 0.15s;}
 .type-chip:hover{transform:translateY(-2px);filter:brightness(1.25);}
 .tc-code{font-family:var(--dot);font-size:10px;margin-bottom:3px;}
 .tc-job{font-size:10px;color:var(--text-dim);}
-
-/* NOTICE */
 .notice-box{background:rgba(0,0,0,0.35);border:2px solid #2a2a5a;padding:16px 18px;margin-bottom:16px;}
 .notice-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:10px;}
 .notice-list{list-style:none;}
 .notice-list li{font-size:12px;color:var(--text-dim);line-height:1.7;padding-left:14px;position:relative;}
 .notice-list li::before{content:'►';position:absolute;left:0;font-size:8px;top:5px;color:var(--gold);}
 .notice-list li strong{color:var(--text);}
-
-/* BUTTONS */
 .btn-start{display:block;width:100%;padding:16px;background:#e94560;border:none;color:#fff;font-family:var(--dot);font-size:15px;letter-spacing:0.12em;cursor:pointer;box-shadow:4px 4px 0 rgba(0,0,0,0.5);transition:all 0.1s;}
 .btn-start:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(0,0,0,0.5);}
 .btn-start:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,0.5);}
 .btn-list{display:block;width:100%;padding:13px;background:transparent;border:2px solid var(--text-dim);color:var(--text-dim);font-family:var(--dot);font-size:13px;letter-spacing:0.1em;cursor:pointer;margin-top:8px;transition:all 0.15s;box-shadow:3px 3px 0 rgba(0,0,0,0.3);}
-.btn-list:hover{border-color:var(--gold);color:var(--gold);box-shadow:4px 4px 0 rgba(0,0,0,0.4);}
-
-/* PROGRESS */
+.btn-list:hover{border-color:var(--gold);color:var(--gold);}
 .progress-wrap{margin-bottom:20px;padding-top:20px;}
 .progress-info{display:flex;justify-content:space-between;font-family:var(--dot);font-size:12px;color:var(--text-dim);margin-bottom:6px;}
 .progress-track{height:10px;background:var(--surface2);border:2px solid #2a2a5a;overflow:hidden;}
 .progress-fill{height:100%;background:repeating-linear-gradient(90deg,var(--green) 0,var(--green) 8px,#22cc66 8px,#22cc66 16px);transition:width 0.4s ease;}
-
-/* QUESTION */
-.q-card{background:var(--surface2);border:2px solid #2a4a7a;padding:24px 20px;margin-bottom:16px;position:relative;}
+.q-card{background:var(--surface2);border:2px solid #2a4a7a;padding:24px 20px;margin-bottom:16px;}
 .q-num{font-family:var(--dot);font-size:11px;color:var(--green);margin-bottom:12px;letter-spacing:0.2em;}
-.q-text{font-size:clamp(13px,3.2vw,16px);line-height:1.9;font-weight:700;margin-bottom:22px;letter-spacing:0.02em;}
+.q-text{font-size:clamp(13px,3.2vw,16px);line-height:1.9;font-weight:700;margin-bottom:22px;}
 .scale-wrap{display:flex;flex-direction:column;gap:6px;}
 .scale-btn{width:100%;padding:12px 14px;background:rgba(0,0,0,0.3);border:2px solid #2a2a5a;color:var(--text-dim);font-family:var(--body);font-size:13px;cursor:pointer;transition:all 0.12s;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:2px 2px 0 rgba(0,0,0,0.3);}
 .scale-btn:hover{background:rgba(255,215,0,0.07);border-color:var(--gold);color:var(--text);transform:translateX(4px);}
-.scale-btn:active{transform:translateX(1px);}
 .s-icon{font-family:var(--dot);font-size:13px;width:22px;text-align:center;flex-shrink:0;}
-
-/* RESULT */
-.result-header{text-align:center;padding:28px 16px 24px;background:var(--surface2);border:2px solid var(--gold);margin-bottom:14px;position:relative;}
+.result-header{text-align:center;padding:28px 16px 24px;background:var(--surface2);border:2px solid var(--gold);margin-bottom:14px;}
 .dot-art-wrap{display:flex;justify-content:center;margin-bottom:16px;}
-.dot-art{display:grid;grid-template-columns:repeat(16,var(--px));gap:0;filter:drop-shadow(0 0 10px rgba(255,215,0,0.35));}
-.dp{width:var(--px);height:var(--px);}
+.dot-art{display:grid;gap:0;filter:drop-shadow(0 0 10px rgba(255,215,0,0.35));}
 .result-eyebrow{font-family:var(--dot);font-size:11px;color:var(--green);letter-spacing:0.3em;margin-bottom:10px;}
 .result-code{font-family:var(--dot);font-size:clamp(20px,5.5vw,32px);color:var(--gold);letter-spacing:0.25em;margin-bottom:4px;text-shadow:3px 3px 0 rgba(0,0,0,0.5);}
 .result-job{font-family:var(--dot);font-size:clamp(24px,6.5vw,40px);letter-spacing:0.1em;line-height:1.1;margin-bottom:10px;text-shadow:3px 3px 0 rgba(0,0,0,0.5);}
 .result-tagline{font-size:13px;color:var(--text-dim);line-height:1.7;}
-
-/* axis bars */
 .axis-bars-card{background:var(--surface2);border:2px solid #2a4a7a;padding:20px;margin-bottom:10px;}
 .bars-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:16px;letter-spacing:0.15em;}
 .axis-bar-row{margin-bottom:14px;}
@@ -104,8 +80,6 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .axis-bar-track{height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;}
 .axis-bar-fill{height:100%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);position:absolute;left:0;top:0;}
 .axis-bar-mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.15);}
-
-/* result cards */
 .r-card{background:var(--surface2);border:2px solid #2a4a7a;padding:18px;margin-bottom:10px;}
 .r-card-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:12px;letter-spacing:0.15em;}
 .r-list{list-style:none;}
@@ -114,23 +88,33 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .r-list li:last-child{border-bottom:none;}
 .r-play-text{font-size:13px;line-height:1.85;color:var(--text-dim);}
 .compat-wrap{display:flex;gap:6px;flex-wrap:wrap;}
-.compat-chip{padding:5px 10px;border:2px solid;font-family:var(--dot);font-size:11px;letter-spacing:0.05em;}
+.compat-chip{padding:5px 10px;border:2px solid;font-family:var(--dot);font-size:11px;}
 .compat-chip.first{border-color:var(--gold);color:var(--gold);}
 .compat-chip:not(.first){border-color:#2a2a5a;color:var(--text-dim);}
-
-/* LIST PAGE */
-.list-page-title{font-family:var(--dot);font-size:clamp(14px,3.5vw,18px);color:var(--gold);text-align:center;padding:28px 0 16px;letter-spacing:0.1em;}
-.list-grid{display:flex;flex-direction:column;gap:10px;}
-.list-card{background:var(--surface2);border:2px solid #2a4a7a;padding:18px;display:flex;gap:16px;align-items:flex-start;cursor:pointer;transition:all 0.15s;}
+/* stats */
+.stats-card{background:var(--surface2);border:2px solid #2a4a7a;padding:18px;margin-bottom:10px;}
+.stats-title{font-family:var(--dot);font-size:12px;color:var(--gold);margin-bottom:14px;letter-spacing:0.15em;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+.stat-row{display:flex;align-items:center;gap:8px;padding:5px 0;}
+.stat-job{font-family:var(--dot);font-size:10px;min-width:64px;color:var(--text-dim);}
+.stat-bar-wrap{flex:1;height:8px;background:rgba(0,0,0,0.4);border:1px solid #2a2a5a;overflow:hidden;}
+.stat-bar-fill{height:100%;transition:width 1s ease;}
+.stat-pct{font-family:var(--dot);font-size:10px;min-width:36px;text-align:right;color:var(--text-dim);}
+.stat-highlight{background:rgba(255,215,0,0.06);border:1px solid var(--gold) !important;}
+.stat-highlight .stat-job{color:var(--gold);}
+.stat-highlight .stat-pct{color:var(--gold);}
+.stats-total{font-family:var(--dot);font-size:10px;color:var(--text-dim);text-align:right;margin-top:10px;letter-spacing:0.1em;}
+/* list */
+.list-page-title{font-family:var(--dot);font-size:clamp(13px,3.5vw,17px);color:var(--gold);text-align:center;padding:28px 0 16px;letter-spacing:0.1em;}
+.list-grid{display:flex;flex-direction:column;gap:4px;}
+.list-card{background:var(--surface2);border:2px solid #2a4a7a;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.15s;}
 .list-card:hover{border-color:var(--gold);transform:translateX(3px);}
-.list-spr{flex-shrink:0;}
-.list-spr .dot-art{--px:3px;}
-.list-info{flex:1;}
-.list-code{font-family:var(--dot);font-size:11px;color:var(--text-dim);margin-bottom:3px;letter-spacing:0.15em;}
-.list-job{font-family:var(--dot);font-size:16px;margin-bottom:6px;}
-.list-tagline{font-size:12px;color:var(--text-dim);line-height:1.6;}
-.list-axes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
-.list-ax{font-family:var(--dot);font-size:10px;padding:2px 6px;border:1px solid;opacity:0.7;}
+.list-left{display:flex;align-items:center;gap:12px;}
+.list-code{font-family:var(--dot);font-size:11px;color:var(--text-dim);letter-spacing:0.12em;min-width:36px;}
+.list-job{font-family:var(--dot);font-size:15px;}
+.list-axes{display:flex;gap:4px;flex-wrap:wrap;}
+.list-ax{font-family:var(--dot);font-size:9px;padding:2px 5px;border:1px solid;opacity:0.75;}
+.list-arrow{font-family:var(--dot);font-size:12px;color:var(--text-dim);flex-shrink:0;margin-left:8px;}
 </style>
 </head>
 <body>
@@ -139,8 +123,8 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <!-- TOP -->
 <div class="screen active" id="sc-top">
   <div class="site-header">
-    <div class="header-sprites header-sprites-border px-top" id="header-sprites"></div>
-    <div class="title-block px-bot">
+    <div class="header-sprites" id="header-sprites"></div>
+    <div class="title-block">
       <div class="title-eyebrow">▶ NEW GAME START ◀</div>
       <h1 class="title-main">もしも貴方が<br>RPGの世界で<br>人狼をしていたら</h1>
       <p class="title-sub">— 16 TYPE DIAGNOSIS —</p>
@@ -148,26 +132,10 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   </div>
   <div class="px-divider"></div>
   <div class="axis-legend">
-    <div class="axis-item px-top">
-      <div class="axis-code" style="color:#e07040">A / P 軸</div>
-      <div class="axis-vs" style="color:#e07040">能動 ↔ 受動</div>
-      <div class="axis-desc">流れを生み出す姿勢か<br>流れに乗る姿勢か</div>
-    </div>
-    <div class="axis-item px-top">
-      <div class="axis-code" style="color:#4aaa6a">S / O 軸</div>
-      <div class="axis-vs" style="color:#4aaa6a">主観 ↔ 客観</div>
-      <div class="axis-desc">自分の意見を優先するか<br>見られ方を意識するか</div>
-    </div>
-    <div class="axis-item px-top">
-      <div class="axis-code" style="color:#4a9fb8">I / L 軸</div>
-      <div class="axis-vs" style="color:#4a9fb8">直感 ↔ 論理</div>
-      <div class="axis-desc">感覚的に判断するか<br>理屈的に判断するか</div>
-    </div>
-    <div class="axis-item px-top">
-      <div class="axis-code" style="color:#9b6dd6">R / I 軸</div>
-      <div class="axis-vs" style="color:#9b6dd6">現実 ↔ 理想</div>
-      <div class="axis-desc">状況の中でできることをするか<br>最適解を求めるか</div>
-    </div>
+    <div class="axis-item px-top"><div class="axis-code" style="color:#e07040">A / P 軸</div><div class="axis-vs" style="color:#e07040">能動 ↔ 受動</div><div class="axis-desc">流れを生み出す姿勢か<br>流れに乗る姿勢か</div></div>
+    <div class="axis-item px-top"><div class="axis-code" style="color:#4aaa6a">S / O 軸</div><div class="axis-vs" style="color:#4aaa6a">主観 ↔ 客観</div><div class="axis-desc">自分の意見を優先するか<br>見られ方を意識するか</div></div>
+    <div class="axis-item px-top"><div class="axis-code" style="color:#4a9fb8">I / L 軸</div><div class="axis-vs" style="color:#4a9fb8">直感 ↔ 論理</div><div class="axis-desc">感覚的に判断するか<br>理屈的に判断するか</div></div>
+    <div class="axis-item px-top"><div class="axis-code" style="color:#9b6dd6">R / I 軸</div><div class="axis-vs" style="color:#9b6dd6">現実 ↔ 理想</div><div class="axis-desc">状況の中でできることをするか<br>最適解を求めるか</div></div>
   </div>
   <div class="type-grid" id="type-grid-top"></div>
   <div class="notice-box px-top px-bot">
@@ -187,10 +155,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <!-- QUIZ -->
 <div class="screen" id="sc-quiz">
   <div class="progress-wrap">
-    <div class="progress-info">
-      <span id="q-counter">Q01 / 52</span>
-      <span id="q-pct">0%</span>
-    </div>
+    <div class="progress-info"><span id="q-counter">Q01 / 52</span><span id="q-pct">0%</span></div>
     <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
   <div class="q-card px-top px-bot">
@@ -209,25 +174,12 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="result-job" id="res-job"></div>
     <div class="result-tagline" id="res-tagline"></div>
   </div>
-  <div class="axis-bars-card px-top" id="axis-bars">
-    <div class="bars-title">▶ AXIS SCORE</div>
-  </div>
-  <div class="r-card px-top">
-    <div class="r-card-title">▶ 長所</div>
-    <ul class="r-list" id="res-str"></ul>
-  </div>
-  <div class="r-card px-top">
-    <div class="r-card-title">▶ 短所</div>
-    <ul class="r-list" id="res-weak"></ul>
-  </div>
-  <div class="r-card px-top">
-    <div class="r-card-title">▶ 得意な立ち回り</div>
-    <div class="r-play-text" id="res-play"></div>
-  </div>
-  <div class="r-card px-top">
-    <div class="r-card-title">▶ 相性のいいタイプ</div>
-    <div class="compat-wrap" id="res-compat"></div>
-  </div>
+  <div class="axis-bars-card px-top" id="axis-bars"><div class="bars-title">▶ AXIS SCORE</div></div>
+  <div class="stats-card px-top" id="stats-card"><div class="stats-title">▶ みんなの診断結果</div><div id="stats-body"><div style="font-family:var(--dot);font-size:11px;color:var(--text-dim);text-align:center;padding:12px;">読み込み中...</div></div></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 長所</div><ul class="r-list" id="res-str"></ul></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 短所</div><ul class="r-list" id="res-weak"></ul></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 得意な立ち回り</div><div class="r-play-text" id="res-play"></div></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 相性のいいタイプ</div><div class="compat-wrap" id="res-compat"></div></div>
   <button class="btn-start" style="margin-top:18px;" onclick="retry()">▶ もう一度プレイ</button>
   <button class="btn-list" onclick="showScreen('sc-list')">▶ 全職業一覧を見る</button>
 </div>
@@ -240,8 +192,26 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   <button class="btn-list" style="margin-top:20px;" onclick="showScreen('sc-top')">◀ トップに戻る</button>
 </div>
 
+<!-- JOB DETAIL (from list) -->
+<div class="screen" id="sc-detail">
+  <div class="result-header px-gold-top px-gold-bot">
+    <div class="result-eyebrow">▶ JOB DETAIL ◀</div>
+    <div class="dot-art-wrap"><div class="dot-art" id="detail-art"></div></div>
+    <div class="result-code" id="detail-code"></div>
+    <div class="result-job" id="detail-job"></div>
+    <div class="result-tagline" id="detail-tagline"></div>
+  </div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 長所</div><ul class="r-list" id="detail-str"></ul></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 短所</div><ul class="r-list" id="detail-weak"></ul></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 得意な立ち回り</div><div class="r-play-text" id="detail-play"></div></div>
+  <div class="r-card px-top"><div class="r-card-title">▶ 相性のいいタイプ</div><div class="compat-wrap" id="detail-compat"></div></div>
+  <button class="btn-list" style="margin-top:16px;" onclick="showScreen('sc-list')">◀ 一覧に戻る</button>
+  <button class="btn-start" style="margin-top:8px;" onclick="startQuiz()">▶ 診断してみる</button>
+</div>
+
 </div>
 <script>
+// ===== QUESTIONS =====
 const Qs=[
   {t:"気になったことは、まず発言をしてから考えが整理されていく感覚がある",ax:"a",dir:1},
   {t:"市民のとき、誰もまだ触れていない話題を自分から出すことが多い",ax:"a",dir:1},
@@ -297,6 +267,7 @@ const Qs=[
   {t:"ゲームの展開がどう転んでも、そのつど対応策を考えて動ける方だ",ax:"r",dir:1},
 ];
 
+// ===== JOB DATA =====
 const JOBS={
   ASIR:{name:"勇者",color:"#e0a030",tagline:"直感と信念で場を切り開く先駆者",
     str:["正しいと思ったら迷わず動き出せる瞬発力がある","序盤から存在感を出して議論を牽引できる","感触と状況判断を組み合わせた柔軟な攻め方ができる"],
@@ -382,139 +353,752 @@ const JOBS={
 
 const TYPES=['ASIR','ASII','AOIR','AOII','ASLR','ASLI','AOLR','AOLI','PSIR','PSII','POIR','POII','PSLR','PSLI','POLR','POLI'];
 
-// ===== SPRITE SYSTEM =====
-const PAL={
-  ASIR:{H:'#f0c840',B:'#e06020',D:'#802000',A:'#60a0ff',C:'#2060c0',S:'#f8f8f8'},
-  ASII:{H:'#d060c0',B:'#a030a0',D:'#f0a0e0',A:'#60c0ff',C:'#2080d0',S:'#f8f8f8'},
-  AOIR:{H:'#50c080',B:'#208050',D:'#80e0b0',A:'#c0a030',C:'#806000',S:'#f8f8f8'},
-  AOII:{H:'#e080a0',B:'#c04060',D:'#f0b0c0',A:'#ffd080',C:'#c08000',S:'#f8f8f8'},
-  ASLR:{H:'#e05030',B:'#a02010',D:'#f08060',A:'#c0c0c0',C:'#606060',S:'#f8f8f8'},
-  ASLI:{H:'#a060e0',B:'#6020b0',D:'#d0a0ff',A:'#ffd080',C:'#c09000',S:'#f8f8f8'},
-  AOLR:{H:'#60a0e0',B:'#2060b0',D:'#a0d0ff',A:'#f0d060',C:'#c0a000',S:'#f8f8f8'},
-  AOLI:{H:'#9b6dd6',B:'#5030a0',D:'#d0b0ff',A:'#ffd080',C:'#c09000',S:'#f8f8f8'},
-  PSIR:{H:'#e08030',B:'#a04010',D:'#f0b060',A:'#e0e0e0',C:'#808080',S:'#f8f8f8'},
-  PSII:{H:'#e060b0',B:'#a02080',D:'#f0a0d0',A:'#ffe080',C:'#d0a000',S:'#f8f8f8'},
-  POIR:{H:'#60c060',B:'#208040',D:'#a0e0a0',A:'#e0c060',C:'#a08000',S:'#f8f8f8'},
-  POII:{H:'#e0a060',B:'#b06020',D:'#f0c090',A:'#ff80a0',C:'#c02060',S:'#f8f8f8'},
-  PSLR:{H:'#4aaa6a',B:'#206040',D:'#80d0a0',A:'#ffffff',C:'#c0c0c0',S:'#f8f8f8'},
-  PSLI:{H:'#80a0e0',B:'#3050b0',D:'#b0c8ff',A:'#ffa000',C:'#c06000',S:'#f8f8f8'},
-  POLR:{H:'#4a9fb8',B:'#205878',D:'#80c8d8',A:'#f0c040',C:'#b08000',S:'#f8f8f8'},
-  POLI:{H:'#d0a000',B:'#806000',D:'#f8d840',A:'#ff6060',C:'#c02020',S:'#f8f8f8'},
+// ===== SPRITE DEFINITIONS (32x32) =====
+// Each sprite is 32 rows of 32 chars
+// Palette keys: H=hair/hat, F=face/skin, B=body/armor, W=weapon, S=shield/accessory, G=ground/shadow, _=transparent
+// Each job has its own palette + unique pixel art
+
+const SPRITES_32 = {
+ASIR: {
+  pal:{H:'#e8c840',F:'#f0c080',B:'#4080e0',W:'#d0d0d0',S:'#e0a030',G:'#8080a0',A:'#c0c0ff',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHFFFFFHH_____________',
+  '___________HHHHHH______________W',
+  '_________SSBBBBBBB____________WW',
+  '________SSBBBBBBBB___________WWW',
+  '________SBBBBBBBBBB_________WWWW',
+  '________SBBBBBBBBBW_________WWWW',
+  '________SBBBBBBBWWW__________WWW',
+  '_________BBBBBBBWW____________WW',
+  '_________BBBBBBBW______________W',
+  '________BBBBBBBB________________',
+  '________BBBBBBBB________________',
+  '________BBBBBBBBB_______________',
+  '_________BBBBBBB________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '________GGBB_BBGG_______________',
+  '______GGGGG___GGGGG_____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+ASLR: {
+  pal:{H:'#a03020',F:'#f0c080',B:'#808080',W:'#d0d0d0',S:'#808080',G:'#606060',A:'#c04030',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________AAAAAAAAAA____________',
+  '___________AAAAAAAA_____________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '_________BBBBBBBBBBB______WWWW__',
+  '_________BBBBBBBBBBB_____WWWWWW_',
+  '_________BBBBBBBBBBB____WWWWWWW_',
+  '_________BBBBBBBBBBB___WWWWWWW__',
+  '________BBBBBBBBBBBB__WWWWWW____',
+  '________BBBBBBBBBBBBWWWWWW______',
+  '________BBBBBBBBBBBWWWWW________',
+  '________BBBBBBBBBBWWWW__________',
+  '_________BBBBBBBB_______________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '________GGBB__BBGG______________',
+  '______GGGGG____GGGGG____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+ASLI: {
+  pal:{H:'#6030b0',F:'#f0c080',B:'#4040a0',W:'#e0c060',S:'#a080e0',G:'#404080',A:'#c0a0ff',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHHH____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '__________HHHHHHHH______________',
+  '__________BBBBBBBB______________',
+  '_________BBBBBBBBBB_____________',
+  '_________BBBBBBBBBB_____W_______',
+  '_________BBBBBBBBBB____WW_______',
+  '_________BBBBBBBBBB___WWW_______',
+  '_________BBBBBBBBBB__WWWWW______',
+  '________BBBBBBBBBBBWWWWWWWW_____',
+  '________BBBBBBBBBBBWWWWWWWWW____',
+  '________BBBBBBBBBBBWWWWWWWWWW___',
+  '________BBBBBBBBBBB_WWWWWWWW____',
+  '_______AABBBBBBBBBB__WWWWWW_____',
+  '_______AA_BB__BB_____WWWW_______',
+  '_______AA_BB__BB______WW________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '________GGBB__BBGG______________',
+  '______GGGGG____GGGGG____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+AOLR: {
+  pal:{H:'#e0e0e0',F:'#f0c080',B:'#6080c0',W:'#f0f0a0',S:'#f0d060',G:'#4060a0',A:'#a0c0f0',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________AHHHHHHAH_____________',
+  '___________AAAAAAA______________',
+  '______S___BBBBBBBBB_____________',
+  '_____SS__BBBBBBBBBBB____________',
+  '_____SS__BBBBBBBBBBB____________',
+  '_____SS__BBBBBBBBBBB______W_____',
+  '_____SS__BBBBBBBBBBB_____WW_____',
+  '_____SS__BBBBBBBBBBB____WWW_____',
+  '_____SS_BBBBBBBBBBBB___WWWW_____',
+  '_____SS_BBBBBBBBBBBB__WWWWW_____',
+  '______S_BBBBBBBBBBBBWWWWWW______',
+  '________BBBBBBBBBBBBWWWWW_______',
+  '_________BBBBBBBBBB_____________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '________GGBB__BBGG______________',
+  '______GGGGG____GGGGG____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+AOLI: {
+  pal:{H:'#4020a0',F:'#f0c080',B:'#6040c0',W:'#c0a0ff',S:'#ffd700',G:'#302060',A:'#e0d0ff',_:''},
+  px:[
+  '_____________HHHHH______________',
+  '____________HHHHHHH_____________',
+  '___________HHHHHHHHH____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '___________HHHHHHH______________',
+  '__________ABBBBBBBA_____________',
+  '_________ABBBBBBBBBA____________',
+  '_________ABBBBBBBBBAW___________',
+  '_________ABBBBBBBBBBW___________',
+  '_________ABBBBBBBBBBBW__________',
+  '_________ABBBBBBBBBBBWW_________',
+  '________AABBBBBBBBBBBWWW________',
+  '________AABBBBBBBBBBWWWW________',
+  '________AABBBBBBBBBWWWWW________',
+  '________AABBBBBBBBWWWWWW________',
+  '________AABBBBBBB_______________',
+  '_______AAA_BB__BB_______________',
+  '_______AAA_BB__BB_______________',
+  '__________BB__BB________________',
+  '__________BB__BB________________',
+  '________GGBB__BBGG______________',
+  '______GGGGG____GGGGG____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+AOIR: {
+  pal:{H:'#202020',F:'#f0c080',B:'#303040',W:'#d0d0a0',S:'#604020',G:'#303030',A:'#505060',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHH______________',
+  '__________AABBBBBAA_____________',
+  '_________AABBBBBBBAA____________',
+  '_________AABBBBBBBAA____________',
+  '_________AABBBBBBBAA____W_______',
+  '_________AABBBBBBBAA___WW_______',
+  '_________AABBBBBBBAA__WWW_______',
+  '________AAABBBBBBBAAWWWWW_______',
+  '________AAABBBBBBBAAAWWW________',
+  '________AABBBBBBBBBAA___________',
+  '__________BBBBBBBBB_____________',
+  '__________BBBBBBBBB_____________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+AOII: {
+  pal:{H:'#e0a030',F:'#f0c080',B:'#e080a0',W:'#c0a060',S:'#f0d0a0',G:'#c06080',A:'#fff0a0',_:''},
+  px:[
+  '___________AAAAAA_______________',
+  '__________AAAAAAAA______________',
+  '___________HHHHHH_______________',
+  '__________HHFFFFFH______________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '___________HHHHHHH______________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '_________BBBBBBBBBBB_____W______',
+  '_________BBBBBBBBBBB____WW______',
+  '_________BBBBBBBBBBB___WWW______',
+  '_________BBBBBBBBBBB___WW_______',
+  '________BBBBBBBBBBBB___W________',
+  '________BBBBBBBBBBBB____________',
+  '________BBBBBBBBBBB_____________',
+  '________BBBBBBBBBB______________',
+  '_________BBBBBBBBB______________',
+  '_________BBSSBB_________________',
+  '_________BBSSBB_________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '________GGBB_BBGG_______________',
+  '______GGGGG___GGGGG_____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+ASII: {
+  pal:{H:'#c040c0',F:'#f0c080',B:'#8040a0',W:'#80c0ff',S:'#c060e0',G:'#602080',A:'#e0a0ff',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '___________HHHHHHH______________',
+  '________WWBBBBBBBBB_____________',
+  '_______WWWBBBBBBBBBB____________',
+  '_______WWWBBBBBBBBBB____________',
+  '________WWBBBBBBBBBBB_W_________',
+  '___________BBBBBBBBBBWW_________',
+  '___________BBBBBBBBBBWWW________',
+  '__________BBBBBBBBBBBWWW________',
+  '__________BBBBBBBBBBBWWW________',
+  '__________BBBBBBBBBBWWW_________',
+  '__________BBBBBBBBBWW___________',
+  '__________BBBBBBBBB_____________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+PSIR: {
+  pal:{H:'#e08030',F:'#f0c080',B:'#e0a060',W:'#f0f0f0',S:'#c07020',G:'#806030',A:'#fff0e0',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '___________HHHHHHH______________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '_________BBBBBBBBBBB____________',
+  '_________BBBBBBBBBBBB___________',
+  '__________BBBBBBBBBBB___________',
+  '__________BBBBBBBBBB____________',
+  '__________BBBBBBBBBB____________',
+  '__________BBBBBBBBB_____________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBB_____________',
+  '__________BBBBBBBBB_____________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+PSII: {
+  pal:{H:'#e060b0',F:'#f0c080',B:'#f080c0',W:'#ffd700',S:'#ff80e0',G:'#c04080',A:'#fff0f8',_:''},
+  px:[
+  '________________________________',
+  '___________HHHHHHHH_____________',
+  '__________HHHHHHHHHH____________',
+  '__________HHFFFFFHHH____________',
+  '__________HFFAAAFFF_____________',
+  '__________HFFFFFFFH_____________',
+  '__________AHHHHHHHA_____________',
+  '___________AAAAAAA______________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '________SBBBBBBBBBBB____________',
+  '________SBBBBBBBBBBBB___________',
+  '________SBBBBBBBBBBB____________',
+  '________SBBBBBBBBBB_____________',
+  '________SBBBBBBBBB______________',
+  '_________BBBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '________SBBBBBBBBBBBB___________',
+  '________SBBBBBBBBBB_____________',
+  '_________BB_SS_BB_______________',
+  '_________BB_SS_BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+POIR: {
+  pal:{H:'#806020',F:'#f0c080',B:'#80a040',W:'#c0c060',S:'#d0a020',G:'#406020',A:'#e0d080',_:''},
+  px:[
+  '_____________HHHHH______________',
+  '____________HHHHHHH_____________',
+  '____________HHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHH______________',
+  '___________HHHHHHH______________',
+  '__________BBBBBBBBB_____________',
+  '_________BBBBBBBBBBB____________',
+  '_________BBBBBBBBBBB_____W______',
+  '_________BBBBBBBBBBB____WW______',
+  '_________BBBBBBBBBBB___WWW______',
+  '_________BBBBBBBBBBBAAWWW_______',
+  '________BBBBBBBBBBBBAAW_________',
+  '________BBBBBBBBBBBBAA__________',
+  '________BBBBBBBBBBB_____________',
+  '________BBBBBBBBBBB_____________',
+  '_________BBBBBBBBB______________',
+  '_________BB_AA_BB_______________',
+  '_________BB_AA_BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+POII: {
+  pal:{H:'#e0a030',F:'#f0c080',B:'#e08040',W:'#ffff80',S:'#ff6080',G:'#c06020',A:'#ffe0a0',_:''},
+  px:[
+  '___________AAAAAA_______________',
+  '________AAAAAAAAAAAAA___________',
+  '__________AHHHHHHHA_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________AHHHHHHHA_____________',
+  '___________AAAAAAA______________',
+  '_WWWW_____BBBBBBBBB_____________',
+  '__WWWW____BBBBBBBBB_____________',
+  '___WWWW__BBBBBBBBBBB____________',
+  '____WWW__BBBBBBBBBBB____________',
+  '_____WW__BBBBBBBBBBB____________',
+  '______W__BBBBBBBBBBB____________',
+  '________BBBBBBBBBBBB____________',
+  '________BBBBBBBBBBBB_____WWWW___',
+  '________BBBBBBBBBBBB____WWWWWW__',
+  '________BBBBBBBBBBB_____WWWWW___',
+  '_________BBBBBBBBB______WWWW____',
+  '__________BBBBBBB_______WWW_____',
+  '__________BB_SS_BB______________',
+  '__________BB_SS_BB______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+PSLR: {
+  pal:{H:'#e0e0e0',F:'#f0c080',B:'#40a060',W:'#f0f0f0',S:'#ffd700',G:'#208040',A:'#c0ffd0',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________HHHHHHHHH_____________',
+  '___________HHHHHHH______________',
+  '____W_____BBBBBBBBB_____________',
+  '____WW___BBBBBBBBBBB____________',
+  '____WWW__BBBBBBBBBBB____________',
+  '____WWWW_BBBBBBBBBBB____________',
+  '____WWWWWBBBBBBBBBBB____________',
+  '____WWWWWBBBBBBBBBBB____________',
+  '____WWWWBBBBBBBBBBBB____________',
+  '____WWWBBBBBBBBBBBBB____________',
+  '____WWBBBBBBBBBBBBBB____________',
+  '____W_BBBBBBBBBBBBB_____________',
+  '______BBBBBBBBBBB_______________',
+  '______BB_SS__BB_________________',
+  '______BB_SS__BB_________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '________GGBB_BBGG_______________',
+  '______GGGGG___GGGGG_____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+PSLI: {
+  pal:{H:'#6080e0',F:'#f0c080',B:'#4060a0',W:'#ffa030',S:'#80c0ff',G:'#304080',A:'#c0d0ff',_:''},
+  px:[
+  '________________________________',
+  '____________HHHHHH______________',
+  '___________HHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '__________HFFFFFFFH_____________',
+  '__________AAHHHHHHAA____________',
+  '___________AAAAAAAA_____________',
+  '____W_____BBBBBBBBB_____________',
+  '____WW___BBBBBBBBBBB____________',
+  '____WWW__BBBBBBBBBBB____________',
+  '____WWWW_BBBBBBBBBBB____________',
+  '____WWWWWBBBBBBBBBBB____________',
+  '____WWWWWBBBBBBBBBBB____________',
+  '____WWWWBBBBBBBBBBBB____________',
+  '____WWWBBBBBBBBBBBBB____________',
+  '____WWBBBBBBBBBBBBBB____________',
+  '____W_BBBBBBBBBBBBB_____________',
+  '______BBBBBBBBBBB_______________',
+  '______BB_AA__BB_________________',
+  '______BB_AA__BB_________________',
+  '__________BB_BB_________________',
+  '__________BB_BB_________________',
+  '________GGBB_BBGG_______________',
+  '______GGGGG___GGGGG_____________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+POLR: {
+  pal:{H:'#202040',F:'#f0c080',B:'#304060',W:'#e0c060',S:'#c04020',G:'#202030',A:'#4060a0',_:''},
+  px:[
+  '___________HHHHHHH______________',
+  '__________HHHHHHHH______________',
+  '__________HHHHHHHHH_____________',
+  '__________HHFFFFFHH_____________',
+  '__________HFFAAAFFH_____________',
+  '___________HFFFFFHH_____________',
+  '___________SHHHHHHS_____________',
+  '____________SSSSSSS_____________',
+  '____W_____BBBBBBBBB_____________',
+  '____W____BBBBBBBBBBB____________',
+  '____W____BBBBBBBBBBB____________',
+  '____W____BBBBBBBBBBB____________',
+  '____W____BBBBBBBBBBB____________',
+  '____W___BBBBBBBBBBBB____________',
+  '____W___BBBBBBBBBBBB____________',
+  '____WWWWBBBBBBBBBBBB____________',
+  '________BBBBBBBBBBBB____________',
+  '________BBBBBBBBBBB_____________',
+  '_________BBBBBBBBB______________',
+  '_________BB_AA_BB_______________',
+  '_________BB_AA_BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
+POLI: {
+  pal:{H:'#ffd700',F:'#f0c080',B:'#e0a000',W:'#ffffff',S:'#ff8080',G:'#c08000',A:'#ffff80',_:''},
+  px:[
+  '_________AAAAAAAAAAAAA__________',
+  '______AAAAAAAAAAAAAAAAAAA_______',
+  '______AA___HHHHHHH___AA_________',
+  '___________HFFFFFH______________',
+  '___________HFAAAFH______________',
+  '___________HFFFFFH______________',
+  '___________HHHHHHH______________',
+  '__________AAAAAAAA______________',
+  '___W_____BBBBBBBBB_____________W',
+  '__WW____BBBBBBBBBBB___________WW',
+  '__WW____BBBBBBBBBBB__________WWW',
+  '___WW___BBBBBBBBBBB_________WWW_',
+  '____W___BBBBBBBBBBB________WW___',
+  '________BBBBBBBBBBBB______WW____',
+  '________BBBBBBBBBBBB_____W______',
+  '________BBBBBBBBBBBB____________',
+  '________BBBBBBBBBBB_____________',
+  '________BBBBBBBBBBB_____________',
+  '_________BBBBBBBBB______________',
+  '_________BB_AA_BB_______________',
+  '_________BB_AA_BB_______________',
+  '__________BB___BB_______________',
+  '__________BB___BB_______________',
+  '________GGBB___BBGG_____________',
+  '______GGGGG_____GGGGG___________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  '________________________________',
+  ]},
 };
 
-// 16x16 sprite template
-const SPR=[
-  '________________',
-  '____HHHHHH______',
-  '___HSSSSSSSH____',
-  '___SBBSBBS______',
-  '___SSSSSSSSH____',
-  '___HSSHSSH______',
-  '____SSSSSSS_____',
-  '__DDDSSSSSDDD___',
-  '_DDDDSSSSSDDDD__',
-  'DDDDDDSSSSDDDDD_',
-  '_DDDDDAAAADDDDD_',
-  '__DDD_AAAA_DDD__',
-  '___DD_CCCC_DD___',
-  '___DD______DD___',
-  '___DDDD_DDDD____',
-  '________________',
-];
-
-// 8x8 mini sprite template
-const MINI=[
-  '________',
-  '__HHHH__',
-  '_HSSSH__',
-  '_SBBS___',
-  '_SSSSH__',
-  '__DDDD__',
-  '__DAAD__',
-  '__D__D__',
-];
-
-function buildSprite(code, container, size) {
-  const pal = PAL[code]||PAL.ASIR;
-  const tmpl = size==='mini' ? MINI : SPR;
-  const cols = size==='mini' ? 8 : 16;
-  const px = size==='mini' ? '3px' : 'var(--px)';
-  container.style.display='grid';
-  container.style.gridTemplateColumns=`repeat(${cols},${px})`;
-  container.innerHTML='';
-  tmpl.forEach(row=>{
-    [...row].forEach(ch=>{
-      const d=document.createElement('div');
-      d.style.width=px; d.style.height=px;
-      const map={H:pal.H,B:pal.B,D:pal.D,A:pal.A,C:pal.C,S:pal.S,'_':'transparent'};
-      d.style.background=map[ch]||'transparent';
+// ===== SPRITE RENDERER =====
+function buildSprite32(code, container) {
+  const s = SPRITES_32[code] || SPRITES_32['ASIR'];
+  container.innerHTML = '';
+  container.style.gridTemplateColumns = 'repeat(32,5px)';
+  s.px.forEach(row => {
+    [...row].forEach(ch => {
+      const d = document.createElement('div');
+      d.style.width = '5px';
+      d.style.height = '5px';
+      d.style.background = s.pal[ch] || 'transparent';
       container.appendChild(d);
     });
   });
 }
 
-// ===== INIT GRIDS =====
+function buildSprite16(code, container) {
+  // 16x16 mini version - sample every other pixel from 32x32
+  const s = SPRITES_32[code] || SPRITES_32['ASIR'];
+  container.innerHTML = '';
+  container.style.gridTemplateColumns = 'repeat(16,3px)';
+  for (let r = 0; r < 32; r += 2) {
+    for (let c = 0; c < 32; c += 2) {
+      const ch = s.px[r][c];
+      const d = document.createElement('div');
+      d.style.width = '3px';
+      d.style.height = '3px';
+      d.style.background = s.pal[ch] || 'transparent';
+      container.appendChild(d);
+    }
+  }
+}
+
+// ===== STORAGE (shared stats) =====
+const STATS_KEY = 'jinro16-stats-v1';
+
+async function saveResult(code) {
+  try {
+    let data = {};
+    try {
+      const r = await window.storage.get(STATS_KEY, true);
+      if (r) data = JSON.parse(r.value);
+    } catch(e) {}
+    data[code] = (data[code] || 0) + 1;
+    await window.storage.set(STATS_KEY, JSON.stringify(data), true);
+  } catch(e) { console.log('storage error', e); }
+}
+
+async function loadStats() {
+  try {
+    const r = await window.storage.get(STATS_KEY, true);
+    if (r) return JSON.parse(r.value);
+  } catch(e) {}
+  return {};
+}
+
+async function renderStats(myCode) {
+  const stats = await loadStats();
+  const total = Object.values(stats).reduce((a,b)=>a+b,0);
+  const el = document.getElementById('stats-body');
+  if (total === 0) { el.innerHTML = '<div style="font-family:var(--dot);font-size:11px;color:var(--text-dim);text-align:center;padding:8px;">まだデータがありません</div>'; return; }
+
+  const sorted = TYPES.map(t => ({code:t, count:stats[t]||0}));
+  const maxCount = Math.max(...sorted.map(x=>x.count), 1);
+
+  el.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'stats-grid';
+
+  sorted.forEach(({code, count}) => {
+    const pct = total > 0 ? Math.round(count/total*100) : 0;
+    const barW = Math.round(count/maxCount*100);
+    const row = document.createElement('div');
+    row.className = 'stat-row' + (code===myCode?' stat-highlight':'');
+    row.innerHTML = `
+      <div class="stat-job">${JOBS[code].name}</div>
+      <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${barW}%;background:${JOBS[code].color};"></div></div>
+      <div class="stat-pct">${pct}%</div>`;
+    grid.appendChild(row);
+  });
+
+  el.appendChild(grid);
+  const tot = document.createElement('div');
+  tot.className = 'stats-total';
+  tot.textContent = `総診断回数: ${total}回`;
+  el.appendChild(tot);
+}
+
+// ===== INIT =====
 (function(){
-  // header sprites
-  const hs=document.getElementById('header-sprites');
-  TYPES.forEach(t=>{
-    const wrap=document.createElement('div');
-    wrap.className='mini-spr';
-    wrap.title=JOBS[t].name;
-    buildSprite(t,wrap,'mini');
+  const hs = document.getElementById('header-sprites');
+  TYPES.forEach(t => {
+    const wrap = document.createElement('div');
+    wrap.className = 'mini-spr';
+    wrap.title = JOBS[t].name;
+    buildSprite16(t, wrap);
     hs.appendChild(wrap);
   });
 
-  // top type grid
-  const tg=document.getElementById('type-grid-top');
-  TYPES.forEach(t=>{
-    const j=JOBS[t];
-    const d=document.createElement('div');
-    d.className='type-chip';
-    d.style.borderColor=j.color;
-    d.innerHTML=`<div class="tc-code" style="color:${j.color}">${t}</div><div class="tc-job">${j.name}</div>`;
+  const tg = document.getElementById('type-grid-top');
+  TYPES.forEach(t => {
+    const j = JOBS[t];
+    const d = document.createElement('div');
+    d.className = 'type-chip';
+    d.style.borderColor = j.color;
+    d.innerHTML = `<div class="tc-code" style="color:${j.color}">${t}</div><div class="tc-job">${j.name}</div>`;
     tg.appendChild(d);
   });
 
-  // list page
-  const lg=document.getElementById('list-grid');
-  TYPES.forEach(t=>{
-    const j=JOBS[t];
-    const card=document.createElement('div');
-    card.className='list-card px-top';
-    card.style.borderColor=j.color+'66';
+  const lg = document.getElementById('list-grid');
+  TYPES.forEach(t => {
+    const j = JOBS[t];
+    const card = document.createElement('div');
+    card.className = 'list-card px-top';
+    card.style.borderColor = j.color+'66';
+    card.onclick = () => showJobDetail(t);
 
-    const sprWrap=document.createElement('div');
-    sprWrap.className='list-spr';
-    const sprEl=document.createElement('div');
-    sprEl.style.display='grid';
-    buildSprite(t,sprEl,'mini');
-    sprWrap.appendChild(sprEl);
+    const axes = t.split('');
+    const axColors = ['#e07040','#4aaa6a','#4a9fb8','#9b6dd6'];
+    const axLabels = [axes[0]==='A'?'能動':'受動', axes[1]==='S'?'主観':'客観', axes[2]==='I'?'直感':'論理', axes[3]==='R'?'現実':'理想'];
 
-    const axes=t.split('');
-    const axColors=['#e07040','#4aaa6a','#4a9fb8','#9b6dd6'];
-    const axLabels=[
-      axes[0]==='A'?'能動':'受動',
-      axes[1]==='S'?'主観':'客観',
-      axes[2]==='I'?'直感':'論理',
-      axes[3]==='R'?'現実':'理想',
-    ];
+    card.innerHTML = `
+      <div class="list-left">
+        <div class="list-code">${t}</div>
+        <div class="list-job" style="color:${j.color}">${j.name}</div>
+        <div class="list-axes">${axLabels.map((l,i)=>`<span class="list-ax" style="color:${axColors[i]};border-color:${axColors[i]}">${l}</span>`).join('')}</div>
+      </div>
+      <div class="list-arrow">▶</div>`;
 
-    const info=document.createElement('div');
-    info.className='list-info';
-    info.innerHTML=`
-      <div class="list-code">${t}</div>
-      <div class="list-job" style="color:${j.color}">${j.name}</div>
-      <div class="list-tagline">${j.tagline}</div>
-      <div class="list-axes">
-        ${axLabels.map((l,i)=>`<span class="list-ax" style="color:${axColors[i]};border-color:${axColors[i]}">${l}</span>`).join('')}
-      </div>`;
-
-    card.appendChild(sprWrap);
-    card.appendChild(info);
     lg.appendChild(card);
   });
 })();
+
+function showJobDetail(code) {
+  const j = JOBS[code];
+  document.getElementById('detail-code').textContent = code;
+  document.getElementById('detail-job').textContent = j.name;
+  document.getElementById('detail-job').style.color = j.color;
+  document.getElementById('detail-tagline').textContent = j.tagline;
+
+  const da = document.getElementById('detail-art');
+  da.style.gridTemplateColumns = 'repeat(32,5px)';
+  buildSprite32(code, da);
+
+  ['detail-str','detail-weak'].forEach((id,i) => {
+    const el = document.getElementById(id); el.innerHTML = '';
+    (i===0?j.str:j.weak).forEach(t => { const li=document.createElement('li'); li.textContent=t; el.appendChild(li); });
+  });
+  document.getElementById('detail-play').textContent = j.play;
+
+  const compat = document.getElementById('detail-compat');
+  compat.innerHTML = '';
+  j.compat.forEach((c,i) => {
+    const sp = document.createElement('span');
+    sp.className = 'compat-chip'+(i===0?' first':'');
+    sp.textContent = (i+1)+'. '+c+' '+JOBS[c].name;
+    compat.appendChild(sp);
+  });
+
+  document.querySelectorAll('#sc-detail .r-card').forEach(el => el.style.borderColor = j.color+'55');
+  showScreen('sc-detail');
+}
 
 // ===== QUIZ =====
 let cur=0;
@@ -526,22 +1110,14 @@ function startQuiz(){
 }
 
 function renderQ(){
-  const q=Qs[cur],n=cur+1,total=Qs.length;
+  const q=Qs[cur], n=cur+1, total=Qs.length;
   document.getElementById('q-counter').textContent=`Q${String(n).padStart(2,'0')} / ${total}`;
   document.getElementById('q-pct').textContent=Math.round(cur/total*100)+'%';
   document.getElementById('prog-fill').style.width=(cur/total*100)+'%';
   document.getElementById('q-num').textContent='Q'+String(n).padStart(2,'0');
   document.getElementById('q-text').textContent=q.t;
-  const wrap=document.getElementById('scale-wrap');
-  wrap.innerHTML='';
-  const opts=[
-    {val:2,icon:'◎',label:'そう思う'},
-    {val:1,icon:'○',label:'ややそう思う'},
-    {val:0,icon:'△',label:'どちらとも言えない'},
-    {val:-1,icon:'×',label:'あまりそう思わない'},
-    {val:-2,icon:'✕',label:'そう思わない'},
-  ];
-  opts.forEach(o=>{
+  const wrap=document.getElementById('scale-wrap'); wrap.innerHTML='';
+  [{val:2,icon:'◎',label:'そう思う'},{val:1,icon:'○',label:'ややそう思う'},{val:0,icon:'△',label:'どちらとも言えない'},{val:-1,icon:'×',label:'あまりそう思わない'},{val:-2,icon:'✕',label:'そう思わない'}].forEach(o=>{
     const b=document.createElement('button');
     b.className='scale-btn';
     b.innerHTML=`<span class="s-icon">${o.icon}</span>${o.label}`;
@@ -551,17 +1127,12 @@ function renderQ(){
 }
 
 function pick(val){
-  const q=Qs[cur];
-  scores[q.ax]+=val*q.dir;
-  cur++;
+  scores[Qs[cur].ax]+=val*Qs[cur].dir; cur++;
   if(cur>=Qs.length) showResult(); else renderQ();
 }
 
-function showResult(){
-  const A=scores.a>=0?'A':'P';
-  const S=scores.s>=0?'S':'O';
-  const I=scores.i>=0?'I':'L';
-  const R=scores.r>=0?'R':'I';
+async function showResult(){
+  const A=scores.a>=0?'A':'P', S=scores.s>=0?'S':'O', I=scores.i>=0?'I':'L', R=scores.r>=0?'R':'I';
   const code=A+S+I+R;
   const j=JOBS[code]||JOBS['ASIR'];
 
@@ -571,57 +1142,36 @@ function showResult(){
   document.getElementById('res-tagline').textContent=j.tagline;
 
   const da=document.getElementById('dot-art');
-  buildSprite(code,da,'full');
+  da.style.gridTemplateColumns='repeat(32,5px)';
+  buildSprite32(code,da);
 
-  // axis bars
   const barsEl=document.getElementById('axis-bars');
   barsEl.innerHTML='<div class="bars-title">▶ AXIS SCORE</div>';
-  const axes=[
-    {key:'a',left:'能動',right:'受動',color:'#e07040',max:26},
-    {key:'s',left:'主観',right:'客観',color:'#4aaa6a',max:26},
-    {key:'i',left:'直感',right:'論理',color:'#4a9fb8',max:26},
-    {key:'r',left:'現実',right:'理想',color:'#9b6dd6',max:26},
-  ];
-  axes.forEach(ax=>{
-    const sc=scores[ax.key];
-    const pct=((sc+ax.max)/(ax.max*2))*100;
-    const row=document.createElement('div');
-    row.className='axis-bar-row';
-    row.innerHTML=`
-      <div class="axis-bar-labels">
-        <span style="color:${ax.color}">${ax.left}</span>
-        <span style="color:var(--text-dim);font-family:var(--dot);font-size:10px;">${sc>0?'+':''}${sc}</span>
-        <span style="color:var(--text-dim)">${ax.right}</span>
-      </div>
-      <div class="axis-bar-track">
-        <div class="axis-bar-fill" style="width:${pct}%;background:${ax.color};"></div>
-        <div class="axis-bar-mid"></div>
-      </div>`;
+  [{key:'a',left:'能動',right:'受動',color:'#e07040',max:26},{key:'s',left:'主観',right:'客観',color:'#4aaa6a',max:26},{key:'i',left:'直感',right:'論理',color:'#4a9fb8',max:26},{key:'r',left:'現実',right:'理想',color:'#9b6dd6',max:26}].forEach(ax=>{
+    const sc=scores[ax.key], pct=((sc+ax.max)/(ax.max*2))*100;
+    const row=document.createElement('div'); row.className='axis-bar-row';
+    row.innerHTML=`<div class="axis-bar-labels"><span style="color:${ax.color}">${ax.left}</span><span style="font-family:var(--dot);font-size:10px;color:var(--text-dim)">${sc>0?'+':''}${sc}</span><span style="color:var(--text-dim)">${ax.right}</span></div><div class="axis-bar-track"><div class="axis-bar-fill" style="width:${pct}%;background:${ax.color};"></div><div class="axis-bar-mid"></div></div>`;
     barsEl.appendChild(row);
   });
 
   ['res-str','res-weak'].forEach((id,i)=>{
     const el=document.getElementById(id); el.innerHTML='';
-    (i===0?j.str:j.weak).forEach(t=>{
-      const li=document.createElement('li'); li.textContent=t; el.appendChild(li);
-    });
+    (i===0?j.str:j.weak).forEach(t=>{const li=document.createElement('li');li.textContent=t;el.appendChild(li);});
   });
-
   document.getElementById('res-play').textContent=j.play;
 
-  const compat=document.getElementById('res-compat');
-  compat.innerHTML='';
+  const compat=document.getElementById('res-compat'); compat.innerHTML='';
   j.compat.forEach((c,i)=>{
     const sp=document.createElement('span');
     sp.className='compat-chip'+(i===0?' first':'');
     sp.textContent=(i+1)+'. '+c+' '+JOBS[c].name;
     compat.appendChild(sp);
   });
-
-  document.querySelectorAll('.r-card').forEach(el=>el.style.borderColor=j.color+'55');
+  document.querySelectorAll('#sc-result .r-card').forEach(el=>el.style.borderColor=j.color+'55');
+  await saveResult(code);
+  await renderStats(code);
   showScreen('sc-result');
 }
-
 function retry(){ showScreen('sc-top'); }
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
