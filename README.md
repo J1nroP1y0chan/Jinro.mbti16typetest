@@ -1,1 +1,2 @@
-# Jinro.mbti16typetest.bata
+# Jinro.mbti16typetest.beta
+
